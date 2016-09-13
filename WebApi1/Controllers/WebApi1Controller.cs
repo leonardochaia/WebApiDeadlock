@@ -8,7 +8,7 @@ namespace WebApi1.Controllers
     [RoutePrefix("")]
     public class WebApi1Controller : ApiController
     {
-        static HttpClient httpClient = new HttpClient() { Timeout = TimeSpan.FromSeconds(20) };
+        static HttpClient httpClient = new HttpClient();
 
         [Route(""), HttpGet]
         public async Task<HttpResponseMessage> Get()
