@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -7,7 +8,7 @@ namespace WebApi2.Controllers
     [RoutePrefix("")]
     public class WebApi2Controller : ApiController
     {
-        static HttpClient httpClient = new HttpClient();
+        static HttpClient httpClient = new HttpClient() { Timeout = TimeSpan.FromSeconds(20) };
 
         [Route(""), HttpGet]
         public Task<HttpResponseMessage> Get()
