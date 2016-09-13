@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Test deadlock</title>
+    <script src="Scripts/jquery-3.1.0.js"></script>
+    <script type="text/javascript">
+        var singleWebApiNonOwin = "http://localhost/SingleWebApiNonOwin";
+        var webApi1 = "http://localhost/test/webApi1";
+        function execute(times, url) {
+            for (var i = 0; i < times; i++)
+                $.ajax({
+                    url: url
+                });
+        }
+    </script>
+</head>
+<body>
+    <h1>
+        Test Deadlock
+    </h1>
+    <p>
+        The deadlock occurs when a WebApi1, executes an HTTP request
+        to WebApi2 which also executes an HTTP request to WebApi3.
+        If you remove the WebApi2, and call directly the WebApi1 from the WebApi3
+        there are no issues.
+    </p>
+    <p>
+        We have been able to a void the issue by switching either of the WebApi
+        projects to its own Application Pool, or by increasing the Application
+        Pool's Worker Processes up to two.
+    </p>
+    <h2>
+        Requirements for reproduction
+    </h2>
+
+    <ol>
+        <li>Running on IIS</li>
+        <li>Same Application pool for all WebApi projects.</li>
+        <li>Application pool with a single worker process</li>
+    </ol>
+
+
+    <h3>Web api 1 OWIN</h3>
+    <button onclick="execute(1, webApi1)">Request once</button>
+    <button onclick="execute(5, webApi1)">Request 5 times</button>
+    <button onclick="execute(10, webApi1)">Request 10 times</button>
+    <button onclick="execute(50, webApi1)">Request 50 times</button>
+    <button onclick="execute(250, webApi1)">Request 250 times</button>
+    <button onclick="execute(500, webApi1)">Request 500 times</button>
+    <button onclick="execute(1000, webApi1)">Request 1000 times</button>
+    <button onclick="execute(2000, webApi1)">Request 2000 times</button>
+    <button onclick="execute(5000, webApi1)">Request 5000 times</button>
+
+    <h3>Single Web Api Non OWIN</h3>
+    <button onclick="execute(1, webApi1)">Request once</button>
+    <button onclick="execute(5, webApi1)">Request 5 times</button>
+    <button onclick="execute(10, webApi1)">Request 10 times</button>
+    <button onclick="execute(50, webApi1)">Request 50 times</button>
+    <button onclick="execute(250, webApi1)">Request 250 times</button>
+    <button onclick="execute(500, webApi1)">Request 500 times</button>
+    <button onclick="execute(1000, webApi1)">Request 1000 times</button>
+    <button onclick="execute(2000, webApi1)">Request 2000 times</button>
+
+
+
+    <h4>
+        Related Articles
+    </h4>
+    <ol>
+        <li>https://support.microsoft.com/en-us/kb/316451</li>
+    </ol>
+
+</body>
+</html>
